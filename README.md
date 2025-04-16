@@ -23,7 +23,10 @@ In the output, you'll find options to open the app in a
 
 - [development build](https://docs.expo.dev/develop/development-builds/introduction/)
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+## CodeBase 說明
+
+utils/styling.ts 引用的是 react-native-size-matters 裡的作法的改寫
+[react-native-size-matters](https://www.npmjs.com/package/react-native-size-matters).
 
 ## Get a fresh project
 
