@@ -1,11 +1,15 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View, Image } from 'react-native'
 import React from 'react'
 import { colors } from '@/constants/theme'
 
 const index = () => {
   return (
     <View style={styles.container}>
-      <Text>index!!</Text>
+      <Image
+        resizeMode="contain"
+        style={styles.logo}
+        source={require('../assets/images/splashImage.png')}
+      />
     </View>
   )
 }
@@ -18,5 +22,9 @@ const styles = StyleSheet.create({
         justifyContent:'center',
         alignItems:'center',
         backgroundColor:colors.neutral900
+    },
+    logo:{
+        height: '20%',
+        aspectRatio: 1, // 確保圖片寬高都是1:1,不會因為設備不同而變形
     }
 })
