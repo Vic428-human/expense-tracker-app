@@ -12,13 +12,20 @@ import Animated, {
   withRepeat,
   withTiming,
 } from "react-native-reanimated";
+import { useRouter } from "expo-router";
 
 const welcome = () => {
+  const router = useRouter();
+
   return (
     <ScreenWrapper>
       <View style={styles.container}>
         <View>
-          <TouchableOpacity style={styles.logginBUtton}>
+          <TouchableOpacity
+            // push a new page onto the stack,
+            onPress={() => router.push("/(auth)/login")}
+            style={styles.logginBUtton}
+          >
             <Typo fontWeight={"500"}>Sign In</Typo>
           </TouchableOpacity>
           {/* https://blog.csdn.net/qq_34812958/article/details/144585617 */}
@@ -68,7 +75,7 @@ const welcome = () => {
           </Animated.View>
 
           <View style={styles.buttonContainer}>
-            <Button>
+            <Button onPress={() => router.push("/(auth)/register")}>
               <Typo size={22} color={colors.neutral900} fontWeight={"600"}>
                 Get Started
               </Typo>
