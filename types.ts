@@ -26,3 +26,8 @@ export interface CustomButtonProps extends TouchableOpacityProps  {
   children: any | null;
 };
 
+
+export type BackButtonProps = {
+  style?: ViewStyle;
+  iconSize?: number;
+};
