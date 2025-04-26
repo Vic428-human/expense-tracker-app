@@ -7,7 +7,7 @@ import { verticalScale } from "@/utils/styling";
 import Button from "@/components/Button";
 import Animated, {
   FadeIn,
-  useAnimatedStyle,
+  FadeInDown,
   useSharedValue,
   withRepeat,
   withTiming,
@@ -36,22 +36,37 @@ const welcome = () => {
         </View>
 
         <View style={styles.footer}>
-          <View style={{ alignItems: "center" }}>
+          <Animated.View
+            //由下往上動畫
+            entering={FadeInDown.duration(1000)
+              .delay(100)
+              .springify()
+              .damping(12)}
+            style={{ alignItems: "center" }}
+          >
             <Typo size={30} fontWeight={"800"}>
               Always take control
             </Typo>
             <Typo size={30} fontWeight={"800"}>
               of your finances
             </Typo>
-          </View>
-          <View style={{ alignItems: "center", gap: 2 }}>
+          </Animated.View>
+
+          <Animated.View
+            entering={FadeInDown.duration(1000)
+              .delay(200)
+              .springify()
+              .damping(30)}
+            style={{ alignItems: "center", gap: 2 }}
+          >
             <Typo size={17} color={colors.textLight}>
-              Always take control
+              Finance must arrange to set a better
             </Typo>
             <Typo size={17} color={colors.textLight}>
-              of your finances
+              lifestyle in fucture
             </Typo>
-          </View>
+          </Animated.View>
+
           <View style={styles.buttonContainer}>
             <Button>
               <Typo size={22} color={colors.neutral900} fontWeight={"600"}>
