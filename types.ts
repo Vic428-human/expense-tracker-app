@@ -2,7 +2,7 @@ import { Href } from "expo-router";
 import { Firestore, Timestamp } from "firebase/firestore";
 import { Icon } from "phosphor-react-native";
 import React, { ReactNode } from "react";
-import {  ViewStyle, TouchableOpacityProps, TextProps, TextStyle } from "react-native";
+import {  TextInput,TextInputProps, ViewStyle, TouchableOpacityProps, TextProps, TextStyle } from "react-native";
 
 export type ScreenWrapperProps = {
   children: ReactNode; 
@@ -31,3 +31,12 @@ export type BackButtonProps = {
   style?: ViewStyle;
   iconSize?: number;
 };
+
+
+// 所有符合 TextInputProps 的屬性 ex: 1.placeHolder也是一個屬性，不需要所有都列舉出來
+export interface InputProps extends TextInputProps {
+  inputStyle?: TextStyle;
+  icon?: React.ReactNode; // 代表任何可以由 React 渲染的東西
+  containerStyle?: ViewStyle;
+  inputRef?: React.RefObject<TextInput>;
+} 
