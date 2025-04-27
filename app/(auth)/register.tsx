@@ -16,6 +16,7 @@ import * as Icon from "phosphor-react-native";
 import { verticalScale } from "@/utils/styling";
 import Button from "@/components/Button";
 import { useRouter } from "expo-router";
+import { useAuth } from "@/context/authContext";
 
 const Register = () => {
   const router = useRouter();
@@ -26,15 +27,24 @@ const Register = () => {
 
   const [isLoading, setIsLoading] = useState(false);
 
+  // 直接調用 useAuth 會有問題，需要在最外層的 _layout.tsx 補上 AuthProvider
+  const { register: registerUser } = useAuth();
+
   const handleSubmit = async () => {
     if (!passwordRef.current || !nameRef.current || !emailRef.current) {
       Alert.alert("Sign Up", "Please fill in all fields.");
     }
-    console.log("name", nameRef.current);
-    console.log("password", passwordRef.current);
-    console.log("email", emailRef.current);
-    console.log("good to go");
     setIsLoading(true);
+    const response = await registerUser(
+      emailRef.current,
+      nameRef.current,
+      passwordRef.current
+    );
+    setIsLoading(false);
+    console.log("registerUser response==>", response);
+    if (!response.success) {
+      Alert.alert("Sign Up", response.msg);
+    }
   };
 
   return (
