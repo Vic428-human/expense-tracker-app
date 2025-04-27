@@ -40,3 +40,20 @@ export interface InputProps extends TextInputProps {
   containerStyle?: ViewStyle;
   inputRef?: React.RefObject<TextInput>;
 } 
+
+export type AuthContextType = {
+  user: UserType;
+  setUser: Function ;
+  // Promise<void> 中的 void，意思是這個 Promise 完成（fulfilled）時，不會有任何值傳給你。
+  // 如果回傳物件包涵 success and msg,就是 Promise<{success: boolean, msg: string}>
+  login: (email: string, password: string) =>Promise<{success: boolean, msg?: string}>;
+  register: (email: string,name : string,password: string) =>Promise<{success: boolean, msg?: string}>;
+  updateUserDate: (userId: string) => Promise<void>;
+}| null
+
+export type UserType = {
+  uid?: string;
+  email?: string | null;
+  name: string | null;
+  image?: any;
+} | null
