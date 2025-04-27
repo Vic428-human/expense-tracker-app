@@ -1,5 +1,12 @@
-import { StyleSheet, Text, TextInput, View } from "react-native";
-import React, { useRef } from "react";
+import {
+  Alert,
+  Pressable,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from "react-native";
+import React, { useEffect, useRef, useState } from "react";
 import ScreenWrapper from "@/components/ScreenWrapper";
 import Typo from "@/components/Typo";
 import { colors, spacingX, spacingY } from "@/constants/theme";
@@ -7,8 +14,11 @@ import BackButton from "@/components/BackButton";
 import Input from "@/components/Input";
 import * as Icon from "phosphor-react-native";
 import { verticalScale } from "@/utils/styling";
+import Button from "@/components/Button";
+import { useRouter } from "expo-router";
 
 const Login = () => {
+  const router = useRouter();
   // 備忘：
   // Type 'string' is not assignable to type 'TextInput'.ts(2322)
   // 是因為你把 useRef<TextInput | null>(null) 當成一個變數來存放「文字內容」，
@@ -18,6 +28,26 @@ const Login = () => {
 
   const emailRef = useRef<string>(""); // 注意型別改成 string
   const passwordRef = useRef<string>(""); // 注意型別改成 string
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  const expensiveFn = () => {
+    let z = 0;
+    for (let i = 0; i < 10; i++) {
+      z = i;
+      console.log("z", z);
+    }
+  };
+
+  const handleSubmit = async () => {
+    if (!emailRef.current || !passwordRef.current) {
+      Alert.alert("Login", "Please fill in all fields.");
+    }
+    console.log("email", emailRef.current);
+    console.log("password", passwordRef.current);
+    console.log("good to go");
+    setIsLoading(true);
+  };
 
   return (
     <ScreenWrapper>
@@ -36,6 +66,7 @@ const Login = () => {
           <Typo size={20} fontWeight={"600"} color={colors.textLighter}>
             Login now to track all your expenses
           </Typo>
+
           <Input
             onChangeText={(text) => (emailRef.current = text)} //  ref 其實應該是用來取得元件實體（
             placeholder="Enter your email"
@@ -47,7 +78,6 @@ const Login = () => {
               />
             }
           />
-
           <Input
             onChangeText={(text) => (passwordRef.current = text)}
             placeholder="Enter your password"
@@ -58,20 +88,30 @@ const Login = () => {
                 weight="fill"
               />
             }
+            secureTextEntry
           />
 
-          <Typo size={16} fontWeight={"400"}>
-            Enter your email address
+          <Typo size={14} color={colors.text} style={{ textAlign: "right" }}>
+            Forget Password ?
           </Typo>
-
-          <View>
-            <Typo size={20} fontWeight={"600"}>
-              Password
+          {/*  */}
+          <Button loading={isLoading} onPress={handleSubmit}>
+            <Typo size={21} fontWeight={"700"} color={colors.black}>
+              Login
             </Typo>
-            <Typo size={16} fontWeight={"400"}>
-              Enter your password
+          </Button>
+        </View>
+        <View style={styles.footer}>
+          <Typo size={15}>Don't have an account?</Typo>
+          <Pressable
+            onPress={() => {
+              router.navigate("/(auth)/register");
+            }}
+          >
+            <Typo size={15} fontWeight={"700"} color={colors.primary}>
+              Sign Up
             </Typo>
-          </View>
+          </Pressable>
         </View>
       </View>
     </ScreenWrapper>
@@ -85,9 +125,15 @@ const styles = StyleSheet.create({
     flex: 1,
     gap: spacingY._30,
     paddingHorizontal: spacingX._20,
-    // padding: spacingY._7,
+    padding: spacingY._7,
   },
   form: {
     gap: spacingY._20,
+  },
+  footer: {
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "row",
+    gap: spacingX._5,
   },
 });
