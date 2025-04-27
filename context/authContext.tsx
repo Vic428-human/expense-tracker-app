@@ -1,0 +1,98 @@
+import { AuthContextType, UserType } from "@/types";
+import { createContext, useState } from "react";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
+// https://dev.to/imkrunalkanojiya/firebase-v9-firestore-adddoc-and-setdoc-method-examples-nhe
+import { auth, fireStore } from "@/config/firebase";
+import { setDoc, getDoc, doc } from "firebase/firestore";
+
+const AuthContext = createContext<AuthContextType | null>(null);
+
+type Props = {
+  children?: React.ReactNode;
+};
+
+// 問題：
+// Type '({ children }: Props) => void' is not assignable to type 'FC<Props>'.
+// Type 'void' is not assignable to type 'ReactNode'.
+// https://stackoverflow.com/questions/71788254/react-18-typescript-children-fc
+export const Component: React.FC<Props> = ({ children }) => {
+  const [user, setUser] = useState<UserType | null>(null);
+
+  async function login(email: string, password: string) {
+    try {
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      // const user = userCredential.user;
+
+      return { success: true };
+    } catch (error: any) {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      return { success: true, msg: errorMessage };
+    }
+  }
+
+  async function register(email: string, name: string, password: string) {
+    try {
+      // https://github.com/firebase/firebase-js-sdk/discussions/8064
+      const { user } = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+
+      // 參考：Georgy Martynovich
+      // https://stackoverflow.com/questions/48740430/firestore-how-to-get-document-id-after-adding-a-document-to-a-collection
+      // Add a new document in collection "user"
+      await setDoc(doc(fireStore, "users", user.uid), {
+        name,
+        email,
+        uid: user.uid,
+      });
+
+      return { success: true }; // 對應的是 AuthContextType 是先定義好的規範
+    } catch (error: any) {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      return { success: true, msg: errorMessage };
+    }
+  }
+
+  async function updateUserDate(userId: string) {
+    try {
+      const docRef = doc(fireStore, "users", userId);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        // 拿某一筆舊的User資料
+        const userData: UserType = {
+          uid: data.uid,
+          email: data.email || null,
+          name: data.name,
+          image: data.image || null,
+        };
+        setUser({ ...userData }); // https://github.com/firebase/firebase-js-sdk/issues/5987
+      }
+    } catch (error: any) {
+      console.log(error);
+    }
+  }
+
+  const contextAuth: AuthContextType = {
+    user,
+    setUser,
+    login,
+    register,
+    updateUserDate,
+  };
+
+  return (
+    <AuthContext.Provider value={contextAuth}>{children}</AuthContext.Provider>
+  );
+};
