@@ -16,7 +16,6 @@ import { getFirestore, collection, query, where } from 'firebase/firestore';
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-
 };
 
 // Initialize Firebase
@@ -29,7 +28,7 @@ const auth = initializeAuth(app, {
 
 // https://firebase.google.com/docs/firestore/quickstart?hl=zh-cn
 // Initialize Cloud Firestore and get a reference to the service
-const fireStore = getFirestore(app);
+const db = getFirestore(app);
 
 
 
@@ -38,4 +37,4 @@ const fireStore = getFirestore(app);
 // const usersRef = collection(db, 'users');
 // const q = query(usersRef, where('age', '>', 18));
 
-export { app, auth, getApp, getAuth, fireStore };
+export { auth, db };

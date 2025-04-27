@@ -1,24 +1,38 @@
 import { AuthContextType, UserType } from "@/types";
-import { createContext, useState } from "react";
+import { createContext, useState, useContext } from "react";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from "firebase/auth";
 // https://dev.to/imkrunalkanojiya/firebase-v9-firestore-adddoc-and-setdoc-method-examples-nhe
-import { auth, fireStore } from "@/config/firebase";
+import { auth, db } from "@/config/firebase";
 import { setDoc, getDoc, doc } from "firebase/firestore";
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
+// 原先
 type Props = {
-  children?: React.ReactNode;
+  children: React.ReactNode;
 };
+
+// 修改後=> 這邊其實沒用到，預先寫而已，為了之後 type 除了有children 之外的屬性
+interface MyProps {
+  title: string;
+}
+
+type PropsWithChildren<P = unknown> = P & {
+  children?: React.ReactNode | undefined;
+};
+
+// 等价于
+// type MyComponentProps = { title: string; children?: React.ReactNode | undefined }
+type MyComponentProps = PropsWithChildren<MyProps>;
 
 // 問題：
 // Type '({ children }: Props) => void' is not assignable to type 'FC<Props>'.
 // Type 'void' is not assignable to type 'ReactNode'.
 // https://stackoverflow.com/questions/71788254/react-18-typescript-children-fc
-export const Component: React.FC<Props> = ({ children }) => {
+export const AuthProvider: React.FC<MyComponentProps> = ({ children }) => {
   const [user, setUser] = useState<UserType | null>(null);
 
   async function login(email: string, password: string) {
@@ -41,19 +55,18 @@ export const Component: React.FC<Props> = ({ children }) => {
   async function register(email: string, name: string, password: string) {
     try {
       // https://github.com/firebase/firebase-js-sdk/discussions/8064
-      const { user } = await createUserWithEmailAndPassword(
+      const response = await createUserWithEmailAndPassword(
         auth,
         email,
         password
       );
-
       // 參考：Georgy Martynovich
       // https://stackoverflow.com/questions/48740430/firestore-how-to-get-document-id-after-adding-a-document-to-a-collection
       // Add a new document in collection "user"
-      await setDoc(doc(fireStore, "users", user.uid), {
+      await setDoc(doc(db, "users", response?.user?.uid), {
         name,
         email,
-        uid: user.uid,
+        uid: response?.user?.uid,
       });
 
       return { success: true }; // 對應的是 AuthContextType 是先定義好的規範
@@ -66,7 +79,7 @@ export const Component: React.FC<Props> = ({ children }) => {
 
   async function updateUserDate(userId: string) {
     try {
-      const docRef = doc(fireStore, "users", userId);
+      const docRef = doc(db, "users", userId);
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
         const data = docSnap.data();
@@ -95,4 +108,13 @@ export const Component: React.FC<Props> = ({ children }) => {
   return (
     <AuthContext.Provider value={contextAuth}>{children}</AuthContext.Provider>
   );
+};
+
+// 封装自定义 Hook 统一处理校验
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error("必须在 AuthProvider 内使用  context");
+  }
+  return context;
 };
