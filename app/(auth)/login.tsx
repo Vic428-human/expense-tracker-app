@@ -16,6 +16,7 @@ import * as Icon from "phosphor-react-native";
 import { verticalScale } from "@/utils/styling";
 import Button from "@/components/Button";
 import { useRouter } from "expo-router";
+import { useAuth } from "@/context/authContext";
 
 const Login = () => {
   const router = useRouter();
@@ -31,22 +32,19 @@ const Login = () => {
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const expensiveFn = () => {
-    let z = 0;
-    for (let i = 0; i < 10; i++) {
-      z = i;
-      console.log("z", z);
-    }
-  };
+  const { login: loginUser } = useAuth();
 
   const handleSubmit = async () => {
     if (!emailRef.current || !passwordRef.current) {
       Alert.alert("Login", "Please fill in all fields.");
     }
-    console.log("email", emailRef.current);
-    console.log("password", passwordRef.current);
-    console.log("good to go");
     setIsLoading(true);
+    const response = await loginUser(emailRef.current, passwordRef.current);
+    setIsLoading(false);
+    console.log("loginUser response==>", response);
+    if (!response.success) {
+      Alert.alert("Login", response.msg);
+    }
   };
 
   return (

@@ -40,8 +40,8 @@ export const AuthProvider: React.FC<MyComponentProps> = ({ children }) => {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
+      console.log("判斷當前是登入還登出 ===>", user);
       if (user) {
-        console.log("!! user===>", user);
         setUser({
           uid: user.uid,
           email: user.email,
