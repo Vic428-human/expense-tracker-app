@@ -1,12 +1,14 @@
 import { AuthContextType, UserType } from "@/types";
-import { createContext, useState, useContext } from "react";
+import { createContext, useState, useContext, useEffect } from "react";
 import {
   createUserWithEmailAndPassword,
+  onAuthStateChanged,
   signInWithEmailAndPassword,
 } from "firebase/auth";
 // https://dev.to/imkrunalkanojiya/firebase-v9-firestore-adddoc-and-setdoc-method-examples-nhe
 import { auth, db } from "@/config/firebase";
 import { setDoc, getDoc, doc } from "firebase/firestore";
+import { useRouter } from "expo-router";
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
@@ -34,6 +36,25 @@ type MyComponentProps = PropsWithChildren<MyProps>;
 // https://stackoverflow.com/questions/71788254/react-18-typescript-children-fc
 export const AuthProvider: React.FC<MyComponentProps> = ({ children }) => {
   const [user, setUser] = useState<UserType | null>(null);
+  const router = useRouter();
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        console.log("!! user===>", user);
+        setUser({
+          uid: user.uid,
+          email: user.email,
+          name: user.displayName,
+        });
+        router.replace("/(tabs)"); // 登入後
+      } else {
+        setUser(null);
+        router.replace("/(auth)/welcome"); // 登入前
+      }
+    });
+    return () => unsubscribe;
+  }, []);
 
   async function login(email: string, password: string) {
     try {
