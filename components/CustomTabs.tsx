@@ -103,6 +103,7 @@ export default function CustomTabs({
             >
               {/* route.name 對應的是 Tabs.Screen name= */}
               {tabBarIcons[route.name] && tabBarIcons[route.name](isFocused)}
+              {label}
             </Text>
           </TouchableOpacity>
         );

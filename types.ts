@@ -36,7 +36,7 @@ export type BackButtonProps = {
 // 所有符合 TextInputProps 的屬性 ex: 1.placeHolder也是一個屬性，不需要所有都列舉出來
 export interface InputProps extends TextInputProps {
   inputStyle?: TextStyle;
-  icon?: React.ReactNode; // 代表任何可以由 React 渲染的東西
+  icon?: ReactNode; // 代表任何可以由 React 渲染的東西
   containerStyle?: ViewStyle;
   inputRef?: React.RefObject<TextInput>;
 } 
@@ -57,3 +57,10 @@ export type UserType = {
   name: string | null;
   image?: any;
 } | null
+
+export type HeaderProps = {
+  leftIcon?: ReactNode;
+  rightIcon?: ReactNode;
+  title?: string;
+  style?: ViewStyle;
+};  
