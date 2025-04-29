@@ -48,6 +48,7 @@ export const AuthProvider: React.FC<MyComponentProps> = ({ children }) => {
           name: user.displayName,
         });
         router.replace("/(tabs)"); // 登入後
+        updateUserDate(user.uid);
       } else {
         setUser(null);
         router.replace("/(auth)/welcome"); // 登入前
