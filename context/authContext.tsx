@@ -68,8 +68,14 @@ export const AuthProvider: React.FC<MyComponentProps> = ({ children }) => {
       return { success: true };
     } catch (error: any) {
       const errorCode = error.code;
-      const errorMessage = error.message;
-      return { success: true, msg: errorMessage };
+      let errorMessage = error.message;
+      console.log("errorMessage==>", errorMessage);
+      if (errorMessage.includes("(auth/invalid-credential)"))
+        errorMessage = "密碼錯誤";
+      if (errorMessage.includes("(auth/invalid-email)"))
+        errorMessage = "信箱錯誤";
+
+      return { success: false, msg: errorMessage };
     }
   }
 
@@ -93,8 +99,15 @@ export const AuthProvider: React.FC<MyComponentProps> = ({ children }) => {
       return { success: true }; // 對應的是 AuthContextType 是先定義好的規範
     } catch (error: any) {
       const errorCode = error.code;
-      const errorMessage = error.message;
-      return { success: true, msg: errorMessage };
+      let errorMessage = error.message;
+
+      if (errorMessage.includes("(auth/missing-password)"))
+        errorMessage = "請將所有輸入欄位填確實";
+      if (errorMessage.includes("(auth/weak-password)"))
+        errorMessage = "密碼設定太簡單，請改成複雜一點的密碼";
+      if (errorMessage.includes("(auth/email-already-in-use)"))
+        errorMessage = "此信箱帳號之前已經有註冊過";
+      return { success: false, msg: errorMessage };
     }
   }
 
