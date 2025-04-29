@@ -3,21 +3,25 @@ import React from "react";
 import Button from "@/components/Button";
 import Typo from "@/components/Typo";
 import { auth } from "@/config/firebase";
+import { useAuth } from "@/context/authContext";
+import ScreenWrapper from "@/components/ScreenWrapper";
 
-const index = () => {
+const Home = () => {
+  const { user } = useAuth();
+  console.log("user==>", user);
   const handleLogout = async () => {
     await auth.signOut();
   };
   return (
-    <View>
-      <Text>home</Text>
+    <ScreenWrapper>
+      <Typo>home</Typo>
       <Button onPress={handleLogout}>
         <Typo>Logout</Typo>
       </Button>
-    </View>
+    </ScreenWrapper>
   );
 };
 
-export default index;
+export default Home;
 
 const styles = StyleSheet.create({});
