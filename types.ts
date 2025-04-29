@@ -1,5 +1,3 @@
-import { Href } from "expo-router";
-import { Firestore, Timestamp } from "firebase/firestore";
 import { Icon } from "phosphor-react-native";
 import React, { ReactNode } from "react";
 import {  TextInput,TextInputProps, ViewStyle, TouchableOpacityProps, TextProps, TextStyle } from "react-native";
@@ -64,3 +62,11 @@ export type HeaderProps = {
   title?: string;
   style?: ViewStyle;
 };  
+
+export type accountOptionProps = {
+  title: string;
+  icon: ReactNode;
+  bgColor: string;
+  routeName?:any
+};
+
