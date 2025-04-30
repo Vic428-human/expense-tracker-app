@@ -52,7 +52,7 @@ const Profile = () => {
   const handleLogout = async () => {
     await auth.signOut();
   };
-
+  // https://reactnative.dev/docs/alert
   const showLogoutAlert = () => {
     Alert.alert("Logout", "Are you sure you want to logout?", [
       {
