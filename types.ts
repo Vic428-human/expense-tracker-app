@@ -70,3 +70,9 @@ export type accountOptionProps = {
   routeName?:any
 };
 
+export type ModalWrapperProps = {
+  children: ReactNode;
+  style?: ViewStyle;
+  bg?:string
+};
+

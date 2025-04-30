@@ -25,7 +25,7 @@ In the output, you'll find options to open the app in a
 
 ## CodeBase 說明
 
-utils/styling.ts 引用的是 react-native-size-matters 裡的作法的改寫
+tils/styling.ts 引用的是 react-native-size-matters 裡的作法的改寫
 [react-native-size-matters](https://www.npmjs.com/package/react-native-size-matters).
 用途：
 
@@ -34,7 +34,14 @@ utils/styling.ts 引用的是 react-native-size-matters 裡的作法的改寫
 
 components/CustomTabs.tsx 引用的是
 [tabBar > Static](https://reactnavigation.org/docs/bottom-tab-navigator/).
-用途： 1.客製化 tabs，官方已經有一套用法，根據它的基礎添加 Icons 上去
+用途：
+
+1. 客製化 tabs，官方已經有一套用法，根據它的基礎添加 Icons 上去
+
+editIcon
+用途:
+
+1. 編輯頭像的切版
 
 ## Get a fresh project
 
