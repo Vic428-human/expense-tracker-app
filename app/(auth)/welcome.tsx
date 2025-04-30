@@ -5,13 +5,7 @@ import Typo from "@/components/Typo";
 import { colors, spacingX, spacingY } from "@/constants/theme";
 import { verticalScale } from "@/utils/styling";
 import Button from "@/components/Button";
-import Animated, {
-  FadeIn,
-  FadeInDown,
-  useSharedValue,
-  withRepeat,
-  withTiming,
-} from "react-native-reanimated";
+import Animated, { FadeIn, FadeInDown } from "react-native-reanimated";
 import { useRouter } from "expo-router";
 
 const welcome = () => {
