@@ -17,12 +17,13 @@ import Animated, {
   SlideInUp,
 } from "react-native-reanimated";
 import { auth } from "@/config/firebase";
+import { useRouter } from "expo-router";
 
 const Profile = () => {
   // can't not read prototype of undefined
   // const fadeAnim = useRef(new Animated.Value(0)).current;
-
   const { user } = useAuth();
+  const router = useRouter();
 
   // 創造一個物件陣列，物件有好幾個，每個物件都有 accountOptionProps 裡面具備的屬性
   const accountOptions: accountOptionProps[] = [
@@ -71,7 +72,9 @@ const Profile = () => {
     if (option?.title === "Logout") {
       showLogoutAlert();
     }
-    console.log("option", option);
+    if (option?.routeName) {
+      router.push(option.routeName);
+    }
   };
   return (
     <ScreenWrapper>

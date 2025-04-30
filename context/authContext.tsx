@@ -47,7 +47,7 @@ export const AuthProvider: React.FC<MyComponentProps> = ({ children }) => {
           email: user.email,
           name: user.displayName,
         });
-        router.replace("/(tabs)"); // 登入後
+        router.replace("/(tabs)"); // 登入後 tabs跟auth彼此可以互相覆蓋，則一顯示
         updateUserDate(user.uid);
       } else {
         setUser(null);

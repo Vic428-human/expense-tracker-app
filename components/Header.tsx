@@ -2,7 +2,6 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
 import Typo from "./Typo";
 import { HeaderProps } from "@/types";
-import { colors } from "@/constants/theme";
 
 const Header = ({ style, ...props }: HeaderProps) => {
   return (
