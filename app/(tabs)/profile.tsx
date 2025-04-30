@@ -1,5 +1,5 @@
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import React from "react";
+import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import React, { useRef, useState } from "react";
 import ScreenWrapper from "@/components/ScreenWrapper";
 import Typo from "@/components/Typo";
 import { colors, radius, spacingX, spacingY } from "@/constants/theme";
@@ -11,8 +11,17 @@ import { Image } from "expo-image";
 import { getProfileImage } from "@/services/imageService";
 import { accountOptionProps } from "@/types";
 import * as Icon from "phosphor-react-native";
+import Animated, {
+  FadeIn,
+  FadeInDown,
+  SlideInUp,
+} from "react-native-reanimated";
+import { auth } from "@/config/firebase";
 
 const Profile = () => {
+  // can't not read prototype of undefined
+  // const fadeAnim = useRef(new Animated.Value(0)).current;
+
   const { user } = useAuth();
 
   // 創造一個物件陣列，物件有好幾個，每個物件都有 accountOptionProps 裡面具備的屬性
@@ -39,6 +48,31 @@ const Profile = () => {
       bgColor: "#e11d48",
     },
   ];
+
+  const handleLogout = async () => {
+    await auth.signOut();
+  };
+
+  const showLogoutAlert = () => {
+    Alert.alert("Logout", "Are you sure you want to logout?", [
+      {
+        text: "Cancel",
+        onPress: () => console.log("Cancel Pressed"),
+        style: "cancel",
+      },
+      {
+        text: "Logout",
+        onPress: handleLogout,
+      },
+    ]);
+  };
+
+  const handlePress = (option: accountOptionProps) => {
+    if (option?.title === "Logout") {
+      showLogoutAlert();
+    }
+    console.log("option", option);
+  };
   return (
     <ScreenWrapper>
       <View style={styles.container}>
@@ -49,7 +83,10 @@ const Profile = () => {
         />
 
         {/* user info */}
-        <View style={styles.userInfo}>
+        <Animated.View
+          entering={FadeInDown.duration(400).delay(600)}
+          style={styles.userInfo}
+        >
           {/* avatar */}
           <View>
             {/* user image  */}
@@ -71,12 +108,25 @@ const Profile = () => {
               {user?.email}
             </Typo>
           </View>
-        </View>
-        {/* account option */}
+        </Animated.View>
+
         <View style={styles.accountOption}>
           {accountOptions.map((option, index) => (
-            <View style={styles.listItem} key={index}>
-              <TouchableOpacity style={styles.flexRow}>
+            <Animated.View
+              style={styles.listItem}
+              key={index}
+              // 由上落下的動畫
+              entering={SlideInUp.duration(400)
+                .delay(index * 50)
+                .springify()
+                .damping(20)}
+            >
+              <TouchableOpacity
+                style={styles.flexRow}
+                // 這會在渲染時馬上執行 handlePress(option)，並把回傳值（void）給 onPress，造成型別錯誤
+                // onPress={handlePress(option)}
+                onPress={() => handlePress(option)}
+              >
                 <View
                   style={[
                     styles.listIcon,
@@ -96,7 +146,7 @@ const Profile = () => {
                   style={{ marginLeft: "auto" }} // 這一行讓箭頭靠右
                 />
               </TouchableOpacity>
-            </View>
+            </Animated.View>
           ))}
         </View>
       </View>
