@@ -9,9 +9,17 @@ const _layout = () => {
       {/* Children */}
       <Stack
         screenOptions={{
-          headerShown: false, // 隱藏Header Title
+          headerShown: false,
         }}
-      ></Stack>
+      >
+        <Stack.Screen
+          // https://stackoverflow.com/questions/76108450/presenting-modal-on-tabs-using-react-native-and-expo-router
+          name="(modals)/profileModal" // add a routeName with name='your-modal'
+          options={{
+            presentation: "modal",
+          }}
+        />
+      </Stack>
     </AuthProvider>
   );
 };
