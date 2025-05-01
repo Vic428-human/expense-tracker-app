@@ -20,9 +20,12 @@ import Typo from "@/components/Typo";
 import Input from "@/components/Input";
 import { UserDataType } from "@/types";
 import Button from "@/components/Button";
+import { updateUser } from "@/services/userService";
+import { useRouter } from "expo-router";
 
 const profileModal = () => {
-  const { user } = useAuth();
+  const router = useRouter();
+  const { user, updateUserDate } = useAuth();
   const [userData, setUserData] = useState<UserDataType>({
     name: "",
     image: null,
@@ -33,24 +36,34 @@ const profileModal = () => {
   useEffect(() => {
     if (user) {
       setUserData({
-        name: user?.name || "", // Type 'string | null' is not assignable to type 'string'. 因為有可拿到空字串
-        image: user.image || null,
+        name: user?.name as string, // Type 'string | null' is not assignable to type 'string'. 因為有可拿到空字串
+        image: user?.image || null,
       });
     }
-  }, [user]);
+  }, [user]); // firebase更新後，useAuth 的 user 也會更新，此時觸發
 
   // defined onsubmit arrow func
   const onSubmit = async () => {
-    // name and image get from  userData
     let { name, image } = userData;
-    //  use trim () for return something
     name = name.trim();
     image = image.trim();
-    setLoading(true);
     if (!name) {
-      // Alert use from react native
       Alert.alert("User", "Please fill in all fields");
       return;
+    }
+    setLoading(true);
+    const response = await updateUser(user?.uid as string, {
+      name,
+      image,
+    });
+    setLoading(false);
+
+    if (!response.success) {
+      Alert.alert("User", response.msg);
+    } else {
+      // 刷新手機介面的內容
+      updateUserDate(user?.uid as string);
+      router.back();
     }
   };
 
@@ -87,18 +100,11 @@ const profileModal = () => {
           </View>
         </ScrollView>
       </View>
-      {/* <View style={styles.footer}>
-        <Button>
-          <Typo size={22} color={colors.neutral900} fontWeight={"700"}>
-            Update
-          </Typo>
-        </Button>
-      </View> */}
       <View style={styles.footer}>
         <View style={styles.buttonContainer}>
-          <Button onPress={onSubmit}>
+          <Button onPress={() => onSubmit()}>
             <Typo color={colors.black} fontWeight={"700"}>
-              Updated
+              Updated!
             </Typo>
           </Button>
         </View>

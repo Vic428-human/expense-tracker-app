@@ -112,6 +112,7 @@ export const AuthProvider: React.FC<MyComponentProps> = ({ children }) => {
     }
   }
 
+  // 刷新手機介面的內容
   async function updateUserDate(userId: string) {
     try {
       const docRef = doc(db, "users", userId);

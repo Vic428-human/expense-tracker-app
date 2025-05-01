@@ -81,3 +81,8 @@ export type UserDataType = {
   image?: any;
 } 
 
+export type ResponseType = {
+  success: boolean;
+  msg?: string;
+}
+
