@@ -22,6 +22,7 @@ import { UserDataType } from "@/types";
 import Button from "@/components/Button";
 import { updateUser } from "@/services/userService";
 import { useRouter } from "expo-router";
+import * as ImagePicker from "expo-image-picker";
 
 const profileModal = () => {
   const router = useRouter();
@@ -30,6 +31,7 @@ const profileModal = () => {
     name: "",
     image: null,
   });
+  const [image, setImage] = useState<string | null>(null);
 
   const [loading, setLoading] = useState(false);
 
@@ -42,7 +44,6 @@ const profileModal = () => {
     }
   }, [user]); // firebase更新後，useAuth 的 user 也會更新，此時觸發
 
-  // defined onsubmit arrow func
   const onSubmit = async () => {
     let { name, image } = userData;
     console.log("image==>", image);
@@ -65,6 +66,25 @@ const profileModal = () => {
     }
   };
 
+  // https://docs.expo.dev/versions/latest/sdk/imagepicker/
+  const onPickImage = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ["images"],
+      // allowsEditing: false,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    console.log("result==>", result);
+    if (!result.canceled) {
+      setUserData({
+        ...userData,
+        image: result.assets[0], // 將整個物件派給 image 屬性
+      });
+    }
+  };
+
   return (
     <ModalWrapper style={styles.wrapper}>
       <View style={styles.container}>
@@ -80,11 +100,14 @@ const profileModal = () => {
             {/* https://docs.expo.dev/versions/latest/sdk/image/ */}
             <Image
               style={styles.avatar}
-              source={getProfileImage(user?.image)}
+              source={getProfileImage(userData?.image)} // 拿剛才收到的新的 物件
               contentFit="cover"
               transition={1000}
             />
-            <TouchableOpacity style={styles.editIcon}>
+            <TouchableOpacity
+              style={styles.editIcon}
+              onPress={() => onPickImage()}
+            >
               <Icon.Pencil size={verticalScale(20)} color={colors.neutral800} />
             </TouchableOpacity>
           </View>
