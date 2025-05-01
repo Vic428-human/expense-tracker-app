@@ -38,15 +38,10 @@ components/CustomTabs.tsx 引用的是
 
 1. 客製化 tabs，官方已經有一套用法，根據它的基礎添加 Icons 上去
 
-editIcon
+```
+styles.editIcon
+```
+
 用途:
 
 1. 編輯頭像的切版
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-123
-```
