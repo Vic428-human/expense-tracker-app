@@ -29,7 +29,7 @@ const profileModal = () => {
   const { user, updateUserDate } = useAuth();
   const [userData, setUserData] = useState<UserDataType>({
     name: "",
-    image: null,
+    image: null, // {"assets": [{}], "type": "image", "uri":'xx' }
   });
   const [image, setImage] = useState<string | null>(null);
 
@@ -45,8 +45,7 @@ const profileModal = () => {
   }, [user]); // firebase更新後，useAuth 的 user 也會更新，此時觸發
 
   const onSubmit = async () => {
-    let { name, image } = userData;
-    console.log("image==>", image);
+    let { name, image } = userData; // image這格物件是=> {"assets": [{}], "type": "image", "uri" }
     name = name.trim();
     // image = image.trim(); 會出現 TypeError，因為js的 trim() 不會對 null 做處理
     if (!name) {
@@ -76,11 +75,11 @@ const profileModal = () => {
       quality: 1,
     });
 
-    console.log("result==>", result);
+    console.log("更新圖片===>", result);
     if (!result.canceled) {
       setUserData({
         ...userData,
-        image: result.assets[0], // 將整個物件派給 image 屬性
+        image: result.assets[0], // 將整個物件派給 image 屬性 {"assets": [{}], "type": "image", "uri" }
       });
     }
   };
