@@ -23,6 +23,8 @@ In the output, you'll find options to open the app in a
 
 - [development build](https://docs.expo.dev/develop/development-builds/introduction/)
 
+# 這個有比較大嗎？
+
 ## CodeBase 說明
 
 tils/styling.ts 引用的是 react-native-size-matters 裡的作法的改寫
