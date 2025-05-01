@@ -40,7 +40,7 @@ components/CustomTabs.tsx 引用的是
 
 1. 客製化 tabs，官方已經有一套用法，根據它的基礎添加 Icons 上去
 
-### 測試
+### 頭像切版
 
 ```
 styles.editIcon
@@ -49,3 +49,13 @@ styles.editIcon
 用途:
 
 1. 編輯頭像的切版
+
+### 圖片上傳核心邏輯
+
+```
+services/imageService.ts
+services/userService.ts
+```
+
+1. services/imageService.ts => uploadFileToCloudinary Func => 將本地端的圖片，傳到 cloudinary 的邏輯
+2. services/userService.ts => updateUser Func => 會將先前 cloudinary 回傳的 secure_url 跟 前端更改的 name 文字一併上傳到 firebase 做更新
