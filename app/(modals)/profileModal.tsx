@@ -45,17 +45,15 @@ const profileModal = () => {
   // defined onsubmit arrow func
   const onSubmit = async () => {
     let { name, image } = userData;
+    console.log("image==>", image);
     name = name.trim();
-    image = image.trim();
+    // image = image.trim(); 會出現 TypeError，因為js的 trim() 不會對 null 做處理
     if (!name) {
       Alert.alert("User", "Please fill in all fields");
       return;
     }
     setLoading(true);
-    const response = await updateUser(user?.uid as string, {
-      name,
-      image,
-    });
+    const response = await updateUser(user?.uid as string, userData); // { name, image }  不要直接用這個傳進去
     setLoading(false);
 
     if (!response.success) {
