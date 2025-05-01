@@ -31,7 +31,7 @@ export type BackButtonProps = {
 };
 
 
-// 所有符合 TextInputProps 的屬性 ex: 1.placeHolder也是一個屬性，不需要所有都列舉出來
+// 所有符合 TextInputProps 的屬性 ex: 1.placeHolder 也是一個屬性，不需要所有都列舉出來
 export interface InputProps extends TextInputProps {
   inputStyle?: TextStyle;
   icon?: ReactNode; // 代表任何可以由 React 渲染的東西
@@ -75,4 +75,9 @@ export type ModalWrapperProps = {
   style?: ViewStyle;
   bg?:string
 };
+
+export type UserDataType = {
+  name: string;
+  image?: any;
+} 
 

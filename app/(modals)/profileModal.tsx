@@ -1,25 +1,61 @@
 import {
+  Alert,
   ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ModalWrapper from "@/components/ModalWrapper";
 import { colors, spacingX, spacingY } from "@/constants/theme";
 import Header from "@/components/Header";
 import BackButton from "@/components/BackButton";
-import { verticalScale } from "@/utils/styling";
+import { scale, verticalScale } from "@/utils/styling";
 import { Image } from "expo-image";
 import { getProfileImage } from "@/services/imageService";
 import { useAuth } from "@/context/authContext";
 import * as Icon from "phosphor-react-native";
+import Typo from "@/components/Typo";
+import Input from "@/components/Input";
+import { UserDataType } from "@/types";
+import Button from "@/components/Button";
 
 const profileModal = () => {
   const { user } = useAuth();
+  const [userData, setUserData] = useState<UserDataType>({
+    name: "",
+    image: null,
+  });
+
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (user) {
+      setUserData({
+        name: user?.name || "", // Type 'string | null' is not assignable to type 'string'. 因為有可拿到空字串
+        image: user.image || null,
+      });
+    }
+  }, [user]);
+
+  // defined onsubmit arrow func
+  const onSubmit = async () => {
+    // name and image get from  userData
+    let { name, image } = userData;
+    //  use trim () for return something
+    name = name.trim();
+    image = image.trim();
+    setLoading(true);
+    if (!name) {
+      // Alert use from react native
+      Alert.alert("User", "Please fill in all fields");
+      return;
+    }
+  };
+
   return (
-    <ModalWrapper>
+    <ModalWrapper style={styles.wrapper}>
       <View style={styles.container}>
         {/* TODO: 這邊的文字想要置中，但是會把icon跟著移動，尚未排除 */}
         <Header
@@ -41,7 +77,31 @@ const profileModal = () => {
               <Icon.Pencil size={verticalScale(20)} color={colors.neutral800} />
             </TouchableOpacity>
           </View>
+          <View style={styles.inputContainer}>
+            <Typo color={colors.neutral200}>Name:</Typo>
+            <Input
+              placeholder="Name"
+              value={userData.name}
+              onChangeText={(text) => setUserData({ ...userData, name: text })}
+            />
+          </View>
         </ScrollView>
+      </View>
+      {/* <View style={styles.footer}>
+        <Button>
+          <Typo size={22} color={colors.neutral900} fontWeight={"700"}>
+            Update
+          </Typo>
+        </Button>
+      </View> */}
+      <View style={styles.footer}>
+        <View style={styles.buttonContainer}>
+          <Button onPress={onSubmit}>
+            <Typo color={colors.black} fontWeight={"700"}>
+              Updated
+            </Typo>
+          </Button>
+        </View>
       </View>
     </ModalWrapper>
   );
@@ -50,6 +110,10 @@ const profileModal = () => {
 export default profileModal;
 
 const styles = StyleSheet.create({
+  wrapper: {
+    flex: 1,
+    backgroundColor: colors.neutral900,
+  },
   container: {
     flex: 1, // take full space
     justifyContent: "space-between",
@@ -87,5 +151,24 @@ const styles = StyleSheet.create({
     shadowRadius: 10,
     elevation: 4,
     padding: spacingY._7,
+  },
+  inputContainer: {
+    gap: spacingY._10,
+  },
+  footer: {
+    width: "100%",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: scale(12),
+    borderTopColor: colors.neutral700,
+    paddingTop: spacingY._15,
+    paddingHorizontal: spacingX._20,
+    borderTopWidth: 1,
+    marginBottom: spacingY._5,
+  },
+  buttonContainer: {
+    width: "100%",
+    paddingHorizontal: spacingX._25,
   },
 });
