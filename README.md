@@ -23,9 +23,9 @@ In the output, you'll find options to open the app in a
 
 - [development build](https://docs.expo.dev/develop/development-builds/introduction/)
 
-# 這個有比較大嗎？
+# CodeBase 架構說明
 
-## CodeBase 說明
+## RWD 根據 IOS 或 Android 等比例縮放的配置
 
 tils/styling.ts 引用的是 react-native-size-matters 裡的作法的改寫
 [react-native-size-matters](https://www.npmjs.com/package/react-native-size-matters).
@@ -71,3 +71,39 @@ styles.deleteIcon
 1. 上傳前空的切版圖
 2. 上傳後有圖片的切版圖
 3. 上傳後右上方可供刪除的圖
+
+### 路由/Modal 切換的架構差異
+
+```
+app/(modals) // 登入後
+
+import { Stack } from "expo-router";
+
+// 以 presentation modal 形式 彈窗的路由，這是在登入後用的 範本如下：
+<Stack.Screen
+   // https://stackoverflow.com/questions/76108450/presenting-modal-on-tabs-using-react-native-and-expo-router
+   name="(modals)/profileModal" // add a routeName with name='your-modal'
+   options={{
+   presentation: "modal",
+   }}
+/>
+
+```
+
+1. 彈窗相關的路由
+
+```
+app/(auth) // welcome 是 登入前的路由，register跟login則是welcome page裡面可以切換的路由
+```
+
+1. 跟登入前後有關的路由
+
+```
+import { Tabs, useSegments } from "expo-router";
+
+app/(tabs)/_layout.tsx  // tabs 路由，登入後可以進入的
+
+app/(tabs)/profile.tsx // 在同樣 tabs 路徑底下，可以根據 _layout.tsx裡面  expo-router 的 Tabs 去切換當前對應的tab
+```
+
+1. 跟 tabs 切換有關的路由
