@@ -65,6 +65,16 @@ export const getProfileImage = (image: any) => {
 };
 
 
+export const getFilePath = (image: any) => {
+
+    if (image && typeof image == "string") return image;   
+    // 從本地上傳圖片的時候會是物件  ex: image => { "assetId":  ,"type": "image", "uri": "file:/ }
+    if (image && typeof image == "object") return image.uri;
+    
+    return null; // 錢包上傳圖片前是沒有圖片的
+};
+
+
 // 在網頁上的情況類似這樣 參考用 
 // <form enctype="multipart/form-data"> 是必須的，這樣瀏覽器才會用正確的格式夾帶檔案資料
 //     <input type="file" name="file" /> 這個欄位讓使用者從本地裝置選擇一個檔案，並且在表單送出時會以 file 為欄位名稱傳送到伺服器
