@@ -19,13 +19,9 @@
     npx expo start
    ```
 
-In the output, you'll find options to open the app in a
+## CodeBase 架構說明
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-
-# CodeBase 架構說明
-
-## RWD 根據 IOS 或 Android 等比例縮放的配置
+### RWD 根據 IOS 或 Android 等比例縮放的配置
 
 tils/styling.ts 引用的是 react-native-size-matters 裡的作法的改寫
 [react-native-size-matters](https://www.npmjs.com/package/react-native-size-matters).
