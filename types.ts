@@ -1,6 +1,6 @@
 import { Icon } from "phosphor-react-native";
-import React, { ReactNode } from "react";
-import {  TextInput,TextInputProps, ViewStyle, TouchableOpacityProps, TextProps, TextStyle } from "react-native";
+import Reactstring; { ReactNode } from "react";
+import {  TextInputstring;TextInputProps, ViewStyle, TouchableOpacityProps, TextProps, TextStyle } from "react-native";
 
 export type ScreenWrapperProps = {
   children: ReactNode; 
@@ -86,3 +86,22 @@ export type ResponseType = {
   msg?: string;
 }
 
+export type WalletType = {
+  id: string;
+  uid?: string;
+  name: string;
+  image?: any;
+  amount: number;
+  totalIncome: number;
+  totalExpense: number;
+  created?: Date;
+}
+
+export type ImageUploadProps ={
+  file?: any;
+  onSelect: (file:any) => void;
+  onClear: () => void;
+  containerStyle?: ViewStyle;
+  imageStyle?: ViewStyle;
+  placeHolder?: string;
+}
