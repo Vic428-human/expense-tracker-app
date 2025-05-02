@@ -19,6 +19,13 @@ const _layout = () => {
             presentation: "modal",
           }}
         />
+        <Stack.Screen
+          // https://stackoverflow.com/questions/76108450/presenting-modal-on-tabs-using-react-native-and-expo-router
+          name="(modals)/walletModal" // add a routeName with name='your-modal'
+          options={{
+            presentation: "modal",
+          }}
+        />
       </Stack>
     </AuthProvider>
   );
