@@ -22,7 +22,8 @@ export const createdOrUpdateWallet = async (walletData: Partial<WalletType>):  P
       walletToSave.created = new Date();
       // 用 addDoc 讓 Firestore 自動產生 id
       const walletRef = await addDoc(collection(db, "wallets"), walletToSave);
-      return { success: true, data: { ...walletToSave, id: walletRef.id} };
+      // TODO: 不確定放與不放會不會有實質上的區別，先備注 id: walletRef.id 
+      return { success: true, data: { ...walletToSave} };
     }
 
     // https://firebase.google.com/docs/firestore/query-data/queries?hl=zh-tw
