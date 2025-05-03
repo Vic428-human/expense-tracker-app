@@ -24,6 +24,7 @@ import { updateUser } from "@/services/userService";
 import { useRouter } from "expo-router";
 import * as ImagePicker from "expo-image-picker";
 import ImageUpload from "@/components/ImageUpload";
+import { createdOrUpdateWallet } from "@/services/walletService";
 
 const walletModal = () => {
   const router = useRouter();
@@ -40,48 +41,34 @@ const walletModal = () => {
 
   const [loading, setLoading] = useState(false);
 
-  // useEffect(() => {
-  //   if (user) {
-  //     setWallet({
-  //       name: user?.name as string, // Type 'string | null' is not assignable to type 'string'. 因為有可拿到空字串
-  //       image: user?.image || null,
-  //     });
-  //   }
-  // }, [user]); // firebase更新後，useAuth 的 user 也會更新，此時觸發
-
   const onSubmit = async () => {
     let { name, image } = wallet; // image這格物件是=> {"assets": [{}], "type": "image", "uri" }
     name = name.trim();
     // image = image.trim(); 會出現 TypeError，因為js的 trim() 不會對 null 做處理
-    if (!name) {
-      Alert.alert("User", "Please fill in all fields");
+    if (!name || !image) {
+      Alert.alert("Wallet", "Please fill in all fields");
       return;
     }
+
+    const data: WalletType = {
+      uid: user?.uid as string,
+      name,
+      image,
+      id: "",
+      amount: 0,
+      totalIncome: 0,
+      totalExpense: 0,
+    };
+    // TODO: include wallet id if updating
+
     setLoading(true);
-    const response = await updateUser(user?.uid as string, wallet); // { name, image }  不要直接用這個傳進去
+    const response = await createdOrUpdateWallet(data);
     setLoading(false);
-
+    console.log("createdOrUpdateWallet response==>", response);
     if (!response.success) {
-      Alert.alert("User", response.msg);
+      Alert.alert("Wallet", response.msg);
     } else {
-      // 刷新手機介面的內容
-      updateUserDate(user?.uid as string);
       router.back();
-    }
-  };
-
-  // https://docs.expo.dev/versions/latest/sdk/imagepicker/
-  const onPickImage = async () => {
-    // No permissions request is necessary for launching the image library
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ["images"],
-      // allowsEditing: false,
-      aspect: [4, 3],
-      quality: 1,
-    });
-
-    console.log("更新圖片===>", result);
-    if (!result.canceled) {
     }
   };
 

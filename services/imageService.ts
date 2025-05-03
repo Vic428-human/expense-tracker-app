@@ -12,6 +12,8 @@ const CLOUDINARY_URL = `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/uplo
 export const uploadFileToCloudinary = async (file: { uri?: string} | string, folderName:  string): Promise<any> => {
  // https://stackoverflow.com/questions/76859469/how-to-append-local-images-to-formdata-from-expo-v48-onwards
     try{
+        if(!file) return {success: false, data: null }
+
         if(typeof file == "string") {
             return {success: true, data: file}
         }
