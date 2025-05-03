@@ -1,6 +1,6 @@
 import { Icon } from "phosphor-react-native";
-import Reactstring; { ReactNode } from "react";
-import {  TextInputstring;TextInputProps, ViewStyle, TouchableOpacityProps, TextProps, TextStyle } from "react-native";
+import React,{ ReactNode } from "react";
+import {  TextInput ,TextInputProps, ViewStyle, TouchableOpacityProps, TextProps, TextStyle } from "react-native";
 
 export type ScreenWrapperProps = {
   children: ReactNode; 
@@ -84,11 +84,12 @@ export type UserDataType = {
 export type ResponseType = {
   success: boolean;
   msg?: string;
+  data?: any;
 }
 
 export type WalletType = {
-  id: string;
-  uid?: string;
+  id: string; // 識別 wallet 的 id ()
+  uid?: string; // 識別 user id
   name: string;
   image?: any;
   amount: number;
