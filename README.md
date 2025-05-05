@@ -127,3 +127,8 @@ app/(tabs)/profile.tsx // 在同樣 tabs 路徑底下，可以根據 _layout.tsx
 
 1.users 都有其對應的使用者，例如使用者小明，假設對應的 uid 是 oEe 開頭那個，而這個使用者旗下會有好幾個不同 id 的錢包，從 wallets collection 可以看出來目前有三個，7QE,7Rl..這些，從他的新增欄位可以看到，
 它所指向的 uid 是 oEe，這說明這些錢包都是 oEe (小明的)，所以解釋了為什麼需要在 WalletType 定義 uid，因為需要區分是哪一個使用者，而 id 則是區分不同錢包的唯一識別。
+
+## Notion 筆記
+
+[firebase query 用法](https://www.notion.so/firebase-query-2025-0504-1e985acbe2328031b4a2f8adcb94c2bf)
+[typescript 類型參數 用法](https://www.notion.so/typescript-2025-0505-1e985acbe2328019bb47e1aef79228d2)
