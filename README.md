@@ -130,5 +130,6 @@ app/(tabs)/profile.tsx // 在同樣 tabs 路徑底下，可以根據 _layout.tsx
 
 ## Notion 筆記
 
-[firebase query 用法](https://www.notion.so/firebase-query-2025-0504-1e985acbe2328031b4a2f8adcb94c2bf)
-[typescript 類型參數 用法](https://www.notion.so/typescript-2025-0505-1e985acbe2328019bb47e1aef79228d2)
+1. [firebase query 用法](https://www.notion.so/firebase-query-2025-0504-1e985acbe2328031b4a2f8adcb94c2bf)
+2. [typescript 類型參數 用法](https://www.notion.so/typescript-2025-0505-1e985acbe2328019bb47e1aef79228d2)
+3. [The query requires an index. That index is currently building and cannot be used yet. See its status here](https://www.notion.so/firebase-index-2025-0506-1eb85acbe23280fea765db228f0482f9)
