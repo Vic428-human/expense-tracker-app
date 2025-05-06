@@ -8,7 +8,7 @@ import { db } from '@/config/firebase';
 // QueryConstraint 類型定義用法 => https://modularfirebase.web.app/reference/firestore_lite.query
 const useFetchData = <T>(collectionName:string, contraints: QueryConstraint[]) => {
     const [data, setData] = useState<T[]>([]);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string|null>(null);
 
     useEffect(()=>{
@@ -22,7 +22,6 @@ const useFetchData = <T>(collectionName:string, contraints: QueryConstraint[]) =
         const unsubscribe = onSnapshot(q, (snapshot) => {
             // Respond to data
             const fetchData = snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })) as T[];
-            console.log("Current data: ", );
             setData(fetchData);
             setLoading(false);
         },(error) => {
@@ -35,7 +34,7 @@ const useFetchData = <T>(collectionName:string, contraints: QueryConstraint[]) =
 
         // Stop listening to changes => https://firebase.google.com/docs/firestore/query-data/listen?hl=zh-tw
         return () => unsubscribe();
-    })
+    },[])
 
     return (
         { data, loading, error}

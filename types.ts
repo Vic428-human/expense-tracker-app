@@ -88,7 +88,7 @@ export type ResponseType = {
 }
 
 // createdOrUpdateWallet => 對 firebase wallets collection 的操作 ex: 更新firebase上的wallet collection
-// onSnapshot => firebase上會有好幾筆 wallets 的 資料，用 onSnapshot 可以監聽到這些資料的變化，並把這些wallets的資料傳給我  
+// onSnapshot => firebase 上會有好幾筆 wallets 的 資料，用 onSnapshot 可以監聽到這些資料的變化，並把這些wallets的資料傳給我  
 export type WalletType = {
   id: string; // 識別 wallet 的 id ()
   uid?: string; // 識別 user id
