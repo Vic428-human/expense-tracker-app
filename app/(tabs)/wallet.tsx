@@ -6,14 +6,29 @@ import Typo from "@/components/Typo";
 import { verticalScale } from "@/utils/styling";
 import * as Icon from "phosphor-react-native";
 import { useRouter } from "expo-router";
+import useFetchData from "@/hooks/useFetchData";
+import { WalletType } from "@/types";
+import { orderBy, where } from "firebase/firestore";
+import { useAuth } from "@/context/authContext";
 
 const wallet = () => {
   const router = useRouter();
-  /**
-   * Retrieves the total balance.
-   *
-   * @returns {number} The total balance as a fixed number.
-   */
+  const { user } = useAuth();
+
+  // 用 user?.uid 去查詢wallets的原因是因為，uid對應的是當前登入的使用者識別，每個不同的使用者對應不同的uid，
+  // 而抓出的wallets的uid就是當前登入的使用者的uid，所以才能抓出這個使用者的所有錢包
+  // 多欄位查詢的時候會遇到index有關的error訊息，這部分可以透過firebase提供的link來解決，詳細筆記有備注在readme
+  // The query requires an index 開頭的那篇
+  const {
+    data: wallets,
+    loading,
+    error,
+  } = useFetchData<WalletType>("wallets", [
+    where("uid", "==", user?.uid),
+    orderBy("created", "desc"),
+  ]);
+
+  console.log("wallets==>", wallets.length);
 
   const getTotalBalance = () => {
     return 2344;
